@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubIssueClassification", "GitHubIssueClassification\GitHubIssueClassification.csproj", "{65D11803-AA02-4C8B-AC19-526A50C6045B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiFarePrediction", "TaxiFarePrediction\TaxiFarePrediction.csproj", "{EB10A1B0-6DDE-40C3-A75E-E6BB670D8B49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrisFlowerClustering", "IrisFlowerClustering\IrisFlowerClustering.csproj", "{D16C2971-44D5-44CD-95DD-BDA5C77DE355}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentimentAnalysis", "SentimentAnalysis\SentimentAnalysis.csproj", "{ABFA25C6-2F41-43B4-8A49-C8E772E8A91B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65D11803-AA02-4C8B-AC19-526A50C6045B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D11803-AA02-4C8B-AC19-526A50C6045B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65D11803-AA02-4C8B-AC19-526A50C6045B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D11803-AA02-4C8B-AC19-526A50C6045B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB10A1B0-6DDE-40C3-A75E-E6BB670D8B49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB10A1B0-6DDE-40C3-A75E-E6BB670D8B49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB10A1B0-6DDE-40C3-A75E-E6BB670D8B49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB10A1B0-6DDE-40C3-A75E-E6BB670D8B49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16C2971-44D5-44CD-95DD-BDA5C77DE355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16C2971-44D5-44CD-95DD-BDA5C77DE355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16C2971-44D5-44CD-95DD-BDA5C77DE355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16C2971-44D5-44CD-95DD-BDA5C77DE355}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFA25C6-2F41-43B4-8A49-C8E772E8A91B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFA25C6-2F41-43B4-8A49-C8E772E8A91B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFA25C6-2F41-43B4-8A49-C8E772E8A91B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFA25C6-2F41-43B4-8A49-C8E772E8A91B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
