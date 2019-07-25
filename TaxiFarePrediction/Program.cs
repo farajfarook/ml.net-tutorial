@@ -6,22 +6,34 @@ namespace TaxiFarePrediction
 {
     class Program
     {
-        private static MLContext _ctx = new MLContext();
+        private static MLContext _ctx = new MLContext(1);
         private static string _trainFile = Path.Combine("Data", "taxi-fare-train.csv");
-        private static string _testFile = Path.Combine("Data", "taxi-fare-test.csv");
-        
+        private static string _testFile = Path.Combine("Data", "taxi-fare-test.csv");        
+
         static void Main(string[] args)
         {
-            var pipe = _ctx.Transforms.Categorical.OneHotEncoding("VendorIdEnc", "VendorId")
+            var prePipe = _ctx.Transforms.Categorical.OneHotEncoding("VendorIdEnc", "VendorId")
                 .Append(_ctx.Transforms.Categorical.OneHotEncoding("PaymentTypeEnc", "PaymentType"))
                 .Append(_ctx.Transforms.Categorical.OneHotEncoding("RateCodeEnc", "RateCode"))
                 .Append(_ctx.Transforms.Concatenate("Features",
-                    "VendorIdEnc", "RateCodeEnc", "Passengers", "TripTime", "Distance", "PaymentTypeEnc"))
-                .Append(_ctx.Regression.Trainers.FastTree());
-
+                    "VendorIdEnc", "RateCodeEnc", "Passengers", "TripTime", "Distance", "PaymentTypeEnc"));
+                
+            Console.WriteLine("FastTree");
+            var pipe = prePipe.Append(_ctx.Regression.Trainers.FastTree());
             var trainData = _ctx.Data.LoadFromTextFile<TaxiTrip>(_trainFile, ',', true);
             var model = pipe.Fit(trainData);
+            Evaluates(model);
+            
+            
+            Console.WriteLine("LightGbm");
+            var pipe2 = prePipe.Append(_ctx.Regression.Trainers.LightGbm());
+            var trainData2 = _ctx.Data.LoadFromTextFile<TaxiTrip>(_trainFile, ',', true);
+            var model2 = pipe2.Fit(trainData2);
+            Evaluates(model2);
+        }
 
+        private static void Evaluates(ITransformer model)
+        {
             var testData = _ctx.Data.LoadFromTextFile<TaxiTrip>(_testFile, ',', true);
             
             var metrics =_ctx.Regression.Evaluate(model.Transform(testData));
