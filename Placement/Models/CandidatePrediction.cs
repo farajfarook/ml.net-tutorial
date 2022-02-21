@@ -5,5 +5,8 @@ namespace Placement.Models;
 public class CandidatePrediction
 {
     [ColumnName("PredictedLabel")]
-    public string  PredictedLabel { get; set; }
+    public bool PredictedLabel { get; set; }
+    
+    [ColumnName("Score")]
+    public float Score { get; set; }
 }

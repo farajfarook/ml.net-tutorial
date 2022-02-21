@@ -1,67 +1,63 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using Microsoft.ML;
-using Microsoft.ML.Calibrators;
-using Microsoft.ML.Data;
-using Microsoft.ML.Trainers;
-using Microsoft.ML.Transforms.Text;
 using Placement;
 using Placement.Models;
+using Placement.Trainers;
 
-var trainingFileName = Path.Combine(AppContext.BaseDirectory, "Data", "Placement_Data_Full_Class.csv");
-var mlContext = new MLContext(111);
+var dataFile = Path.Combine(AppContext.BaseDirectory, "Data", "Placement_Data_Full_Class.csv");
 
-var trainingDataView = mlContext.Data
-    .LoadFromTextFile<CandidateData>
-        (trainingFileName, hasHeader: true, separatorChar: ',');
+var newSample = new CandidateData
+{
+    Gender = "M",
+    SecondaryEducationPercentage = 100f,
+    SecondaryEducationBoard = "Central",
+    HigherSecondaryEducationPercentage = 90f,
+    HigherSecondaryEducationBoard = "Other",
+    HigherSecondaryEducationSpecialization = "Science",
+    DegreePercentage = 50f,
+    DegreeType = "Sci&Tech",
+    WorkExperience = "No",
+    EmployabilityTestPercentage = 85f,
+    Specialization = "Mkt&Fin",
+    MbaPercentage = 66.28f
+};
 
-var dataSplit = mlContext.Data.TrainTestSplit(trainingDataView, testFraction: 0.3);
 
-// DATA TRANSFORMATION
+var trainers = new List<ITrainerBase>
+{
+    new LbfgsLogisticRegressionTrainer(),
+    new AveragedPerceptronTrainer(),
+    new PriorTrainer(),
+    new SdcaLogisticRegressionTrainer(),
+    new SdcaNonCalibratedTrainer(),
+    new SgdCalibratedTrainer(),
+    new SgdNonCalibratedTrainer()
+};
 
-var tf = mlContext.Transforms;
+trainers.ForEach(trainer =>
+{
+    Console.WriteLine("*******************************");
+    Console.WriteLine($"{ trainer.Name }");
+    Console.WriteLine("*******************************");
 
-TextFeaturizingEstimator FeatText(string name) => tf.Text.FeaturizeText(name, name);
+    trainer.Fit(dataFile);
 
-var dataProcessPipeline = tf
-    .Conversion.MapValueToKey(inputColumnName: nameof(CandidateData.Status), outputColumnName: "Label")
-    
-    .Append(FeatText(nameof(CandidateData.Gender)))
-    .Append(FeatText(nameof(CandidateData.Specialization)))
-    .Append(FeatText(nameof(CandidateData.DegreeType)))
-    .Append(FeatText(nameof(CandidateData.WorkExperience)))
-    .Append(FeatText(nameof(CandidateData.SecondaryEducationBoard)))
-    .Append(FeatText(nameof(CandidateData.HigherSecondaryEducationBoard)))
-    .Append(FeatText(nameof(CandidateData.HigherSecondaryEducationSpecialization)))
+    var modelMetrics = trainer.Evaluate();
 
-    .Append(tf.Concatenate("Features",
-        nameof(CandidateData.Gender),
-        nameof(CandidateData.Specialization),
-        nameof(CandidateData.DegreePercentage),
-        nameof(CandidateData.DegreeType),
-        nameof(CandidateData.MbaPercentage),
-        nameof(CandidateData.WorkExperience),
-        nameof(CandidateData.EmployabilityTestPercentage),
-        nameof(CandidateData.SecondaryEducationBoard),
-        nameof(CandidateData.SecondaryEducationPercentage),
-        nameof(CandidateData.HigherSecondaryEducationBoard),
-        nameof(CandidateData.HigherSecondaryEducationPercentage),
-        nameof(CandidateData.HigherSecondaryEducationSpecialization)
-    ))
-    .Append(tf.NormalizeMinMax("Features", "Features"))
-    .AppendCacheCheckpoint(mlContext);
+    Console.WriteLine($"Accuracy: {modelMetrics.Accuracy:0.##}{Environment.NewLine}" +
+                      $"F1 Score: {modelMetrics.F1Score:#.##}{Environment.NewLine}" +
+                      $"Positive Precision: {modelMetrics.PositivePrecision:#.##}{Environment.NewLine}" +
+                      $"Negative Precision: {modelMetrics.NegativePrecision:0.##}{Environment.NewLine}" +
+                      $"Positive Recall: {modelMetrics.PositiveRecall:#.##}{Environment.NewLine}" +
+                      $"Negative Recall: {modelMetrics.NegativeRecall:#.##}{Environment.NewLine}" +
+                      $"Area Under Precision Recall Curve: {modelMetrics.AreaUnderPrecisionRecallCurve:#.##}{Environment.NewLine}");
 
-// MODEL
-var model = mlContext.MulticlassClassification.Trainers
-    .LbfgsMaximumEntropy(labelColumnName: "Label", featureColumnName: "Features");
+    trainer.Save();
 
-var trainingPipeline = dataProcessPipeline.Append(model);
-var trainedModel = trainingPipeline.Fit(dataSplit.TrainSet);
-
-var testSetTransform = trainedModel.Transform(dataSplit.TestSet);
-var modelMetrics = mlContext.MulticlassClassification.Evaluate(testSetTransform);
-
-Console.WriteLine($"Macro Accuracy: {modelMetrics.MacroAccuracy:#.##}{Environment.NewLine}" +
-                  $"Micro Accuracy: {modelMetrics.MicroAccuracy:#.##}{Environment.NewLine}" +
-                  $"Log Loss: {modelMetrics.LogLoss:#.##}{Environment.NewLine}" +
-                  $"Log Loss Reduction: {modelMetrics.LogLossReduction:#.##}{Environment.NewLine}");
+    var predictor = new Predictor(trainer.Name);
+    var prediction = predictor.Predict(newSample);
+    Console.WriteLine("------------------------------");
+    Console.WriteLine($"Prediction: {prediction.PredictedLabel:#.##}");
+    Console.WriteLine($"Score: {prediction.Score:#.##}");
+    Console.WriteLine("------------------------------");
+});

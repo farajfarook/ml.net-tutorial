@@ -36,10 +36,8 @@ public abstract class TrainerBase<TParameters> : ITrainerBase
 
         _dataSplit = LoadAndPrepareData(trainingFileName);
         var dataProcessPipeline = BuildDataProcessingPipeline();
-        var trainingPipeline = 
-            dataProcessPipeline
-                .Append(Model)
-                .Append(MlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel"));;
+        var trainingPipeline =
+            dataProcessPipeline.Append(Model);
 
         _trainedModel = trainingPipeline.Fit(_dataSplit.TrainSet);
     }
