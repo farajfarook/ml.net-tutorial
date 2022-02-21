@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRecommender", "MovieRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransferLearningTF", "TransferLearningTF\TransferLearningTF.csproj", "{34D24163-1996-4FC1-A174-2E962F63E7D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalmerPenguins", "PalmerPenguins\PalmerPenguins.csproj", "{8AC3AEF0-1A60-4284-B2BD-CB5130E6013D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalmersPenguinsMulticlass", "PalmersPenguinsMulticlass\PalmersPenguinsMulticlass.csproj", "{7DD734DE-E935-4E02-9D32-C3C5B32A4694}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,13 @@ Global
 		{34D24163-1996-4FC1-A174-2E962F63E7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34D24163-1996-4FC1-A174-2E962F63E7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34D24163-1996-4FC1-A174-2E962F63E7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC3AEF0-1A60-4284-B2BD-CB5130E6013D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC3AEF0-1A60-4284-B2BD-CB5130E6013D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC3AEF0-1A60-4284-B2BD-CB5130E6013D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC3AEF0-1A60-4284-B2BD-CB5130E6013D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD734DE-E935-4E02-9D32-C3C5B32A4694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD734DE-E935-4E02-9D32-C3C5B32A4694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD734DE-E935-4E02-9D32-C3C5B32A4694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD734DE-E935-4E02-9D32-C3C5B32A4694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
